@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>GEOID DPP Quiz</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f9f9f9;
+      padding: 20px;
+      color: #333;
+    }
+
+    .quiz-container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 30px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.1);
+      border-radius: 10px;
+    }
+
+    h2 {
+      text-align: center;
+      color: #2e86de;
+    }
+
+    .question {
+      margin-bottom: 20px;
+    }
+
+    .question p {
+      font-weight: bold;
+    }
+
+    label {
+      display: block;
+      margin: 5px 0;
+    }
+
+    #submitBtn {
+      background: #2e86de;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #submitBtn:hover {
+      background: #1b4f72;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-weight: bold;
+      font-size: 18px;
+      text-align: center;
+      color: green;
+    }
+
+    #timer {
+      text-align: right;
+      font-weight: bold;
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #c0392b;
+    }
+  </style>
+</head>
+<body>
+
+<div class="quiz-container">
+  <h2>📘 DPP Quiz – 1 July 2025</h2>
+  <div id="timer">⏳ Time left: 2:00</div>
+
+  <form id="quizForm">
+
+    <div class="question">
+      <p>1. Who was the first Governor-General of India?</p>
+      <label><input type="radio" name="q1" value="correct"> Warren Hastings</label>
+      <label><input type="radio" name="q1" value="wrong"> Lord Mountbatten</label>
+      <label><input type="radio" name="q1" value="wrong"> Jawaharlal Nehru</label>
+    </div>
+
+    <div class="question">
+      <p>2. Which Article defines Fundamental Rights?</p>
+      <label><input type="radio" name="q2" value="wrong"> Article 32</label>
+      <label><input type="radio" name="q2" value="correct"> Article 12-35</label>
+      <label><input type="radio" name="q2" value="wrong"> Article 370</label>
+    </div>
+
+    <div class="question">
+      <p>3. Capital of West Bengal?</p>
+      <label><input type="radio" name="q3" value="correct"> Kolkata</label>
+      <label><input type="radio" name="q3" value="wrong"> Howrah</label>
+      <label><input type="radio" name="q3" value="wrong"> Siliguri</label>
+    </div>
+
+    <div style="text-align:center;">
+      <button type="submit" id="submitBtn">Submit</button>
+    </div>
+
+  </form>
+
+  <div id="result"></div>
+</div>
+
+<script>
+  let timeLeft = 120; // 2 minutes in seconds
+  const timerDisplay = document.getElementById("timer");
+
+  const countdown = setInterval(() => {
+    const minutes = Math.floor(timeLeft / 60);
+    const seconds = timeLeft % 60;
+    timerDisplay.textContent = ⏳ Time left: ${minutes}:${seconds < 10 ? '0' : ''}${seconds};
+    timeLeft--;
+
+    if (timeLeft < 0) {
+      clearInterval(countdown);
+      submitQuiz(); // auto-submit on timeout
+    }
+  }, 1000);
+
+  document.getElementById("quizForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    submitQuiz();
+  });
+
+  function submitQuiz() {
+    clearInterval(countdown); // stop timer
+    let correct = 0;
+    const total = 3;
+    const answers = document.querySelectorAll('input[type=radio]:checked');
+    answers.forEach(answer => {
+      if (answer.value === 'correct') correct++;
+    });
+
+    document.getElementById("result").innerHTML = ✅ You got ${correct} out of ${total} correct.;
+
+    document.getElementById("submitBtn").disabled = true;
+    document.querySelectorAll("input").forEach(input => input.disabled = true);
+  }
+</script>
+
+</body>
+</html>
